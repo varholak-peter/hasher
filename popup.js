@@ -1,6 +1,5 @@
-$(document).ready(function() {
-
-/*
+$(document).ready(function () {
+  /*
  * I decided to leave popout button on the popout page
  *
   if (typeof chrome.extension != "undefined") {
@@ -10,11 +9,11 @@ $(document).ready(function() {
       $("#popup").show();
     }
   }
-*/  
-  
+*/
+
   /*
    * Events registration
-  */
+   */
   $("#input").keyup(function () {
     hasher.update();
   });
@@ -26,18 +25,24 @@ $(document).ready(function() {
   $("#button-popout").click(function () {
     if (typeof chrome.extension != "undefined") {
       //chrome.extension.getBackgroundPage().separatePopup = true;
-/*      
+      /*
       chrome.windows.create({
         url: 'popup.html',
         type: 'popup',
         width: 700,
         height: 800
       });
-*/      
+*/
+
       chrome.tabs.create({
-        url: 'popup.html'
+        url: "popup.html",
       });
     }
+  });
+
+  $("#toggle-show").click(function () {
+    const el = document.getElementById("input-value");
+    el.type = el.type === "text" ? "password" : "text";
   });
 
   // Click on tab (Hash/HMAC/...)
@@ -58,41 +63,40 @@ $(document).ready(function() {
     hasher.update();
     $("#input-value").focus();
   });
-  
+
   /*
    * Animations
    */
-  $(".buttons-2").mouseenter(function(){
+  $(".buttons-2").mouseenter(function () {
     $(this).animate(
       {
-        opacity: 0.8
+        opacity: 0.8,
       },
       150
     );
   });
-  $(".buttons-2").mouseleave(function(){
+  $(".buttons-2").mouseleave(function () {
     $(this).animate(
       {
-        opacity: 0.4
+        opacity: 0.4,
       },
       300
     );
   });
-  
-  
+
   /*
    * Hash navigation
    */
   onHashChange = function () {
-    var hash = window.location.hash.slice(1)
+    var hash = window.location.hash.slice(1);
     $(".screens").hide();
     if (hash == "info") {
       $("#screen-2").show().scrollTop();
     } else {
       $("#screen-1").show().scrollTop();
     }
-  }
-  $(window).bind('hashchange', onHashChange);  
+  };
+  $(window).bind("hashchange", onHashChange);
 
   /*
    * Init
@@ -100,7 +104,7 @@ $(document).ready(function() {
   onHashChange();
   hasher.init();
   hasher.update();
-  
+
   // Focus hack, see http://stackoverflow.com/a/11400653/1295557
   if (location.search != "?focusHack") location.search = "?focusHack";
   //$("#input-value").focus();
